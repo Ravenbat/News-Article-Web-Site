@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    {%load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+    <ul>
+        <li><a href = "{% url 'home' %}">Home</a></li>
+        {% for i in catergory_list %}
+        <li><a href = "{% url 'posts' i.id %}">{{ i.name }}</a></li>
+        {% endfor %}
+        <li><a href = "{% url 'about' %}">About</a></li>
+    </ul>
+    <div class="dropdown" style="float:right;">
+        <button class="dropbtn">{{ request.user }}</button>
+        <div class="dropdown-content" style="left:0;">
+        <a href="{% url 'create-post' %}">New article</a>
+        <a href="{% url 'my-posts' %}">My articles</a>
+        <a href="{% url 'logout' %}">Log out</a>
+        </div>
+      </div>
+
+    <div class="ml-1">
+        <form action="{% url 'create-post' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="">Title</label> <br />
+            {{ form.title }} <br /> 
+            <label for="">Article<label> <br />
+            {{ form.text }} <br />
+            <label for="">Category<label> <br />
+            {{ form.Category }} <br />
+            <label for="">Picture<label> <br />
+            {{ form.image }}
+            <button type='submit'>Publish</button>
+        </form>
+   
+    <div>
+</body>
+</html>

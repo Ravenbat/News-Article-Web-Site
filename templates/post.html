@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    {%load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+    <ul>
+        <li><a href = "{% url 'home' %}">Home</a></li>
+        {% for i in catergory_list %}
+        <li><a href = "{% url 'posts' i.id %}">{{ i.name }}</a></li>
+        {% endfor %}
+        <li><a href = "{% url 'about' %}">About</a></li>
+    </ul>
+    <div class="dropdown" style="float:right;">
+        <button class="dropbtn">{{ request.user }}</button>
+        <div class="dropdown-content" style="left:0;">
+        <a href="{% url 'create-post' %}">New article</a>
+        <a href="{% url 'my-posts' %}">My articles</a>
+        <a href="{% url 'logout' %}">Log out</a>
+        </div>
+      </div>
+
+    <div class="ml-1">
+        <h2>{{post.title}} - {{ post.get_created_date }} {{ post.category }}
+            <span class="author">{{ post.author }}</span>
+        </h2>
+        <img src="{{ post.image.url }}" alt="" width="600" height="500"/>
+        
+        <p class='post-text'>{{ post.text }} {{ post.id }}</p>
+        <br />
+        <hr />
+        <br />
+
+        <form action="{% url 'comment' id=post.id %}" method="POST">
+            <label for="">Leave a comment</label> <br />
+            {% csrf_token %}<textarea name="commenttext" cols="40" rows="4"></textarea> <br />
+            <input type="submit" value="Comment">
+        </form>
+        {% for i in comments %}
+        <p> {{ i.get_created_date }} <span class="author">{{ i.user }}</span>: <p>{{ i.text }}</p>
+            {% if i.user == request.user %}
+                <a id="editButton">Edit this comment</a>
+                <div style="display:none;" id="editArea">
+                    <textarea cols="30" rows="4">{{ i.text }}</textarea>
+                    <p style="display:none;" id="commentId">{{ i.id }}</p>
+                    <input type="submit" id="saveButton" value="Save">
+                </div>
+            {% endif %}
+        </p>
+
+        {% endfor %}
+    <div>
+        <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

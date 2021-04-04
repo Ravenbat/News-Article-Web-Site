@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    {%load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+    
+</head>
+<body>
+    <ul>
+        <li><a href = "{% url 'home' %}">Home</a></li>
+        {% for i in catergory_list %}
+        <li><a href = "{% url 'posts' id=i.id %}">{{ i.name }}</a></li>
+        {% endfor %}
+        <li><a href = "{% url 'about' %}">About</a></li>
+    </ul>
+
+    <div class="dropdown" style="float:right;">
+        <button class="dropbtn">{{ request.user }}</button>
+        <div class="dropdown-content" style="left:0;">
+        <a href="{% url 'create-post' %}">New Article</a>
+        <a href="{% url 'my-posts' %}">My articles</a>
+        <a href="{% url 'logout' %}">Log out</a>
+        </div>
+      </div>
+    
+    <button onclick=getLocation() id="location">Location API</button>
+    <h1 class="ml-1">All articles</h1>
+    {% if cnt == 0 %}
+    <h4>No articles.</h4>
+    {% endif %}
+
+
+    {% for i in posts %}
+    <div>
+        <hr>
+        <h4 style="font-family: 'Courier New', Courier, monospace; color: blue;">{{i.title}} - {{ i.get_created_date }} {{ i.Category }}
+        <span class="author">{{ i.author }}</span>
+        </h4>
+        <img src="{{ i.image.url }}" alt="" width="400" height="300"/>
+        <p style="font-family: Arial, Helvetica, sans-serif;">{{ i.get_text }} <a href="{% url 'post' id=i.id %}">Read more...</a></p>
+        </br>
+    <div>
+    {% endfor %}
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
