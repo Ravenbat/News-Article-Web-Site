@@ -10,3 +10,4 @@ Features:
 - About page explaining the web application
 - On each article users can leave comments
 - Publisher certified users can publish articles
+- Publish form can now take images from storage
